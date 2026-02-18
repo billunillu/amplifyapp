@@ -442,7 +442,7 @@ async function runOcrFromCanvas() {
   const dataUrl = freezeCanvas.toDataURL("image/jpeg", 0.92);
   const base64 = dataUrl.split(",")[1];
 
-  const response = await fetch("/api/ocr", {
+  const response = await fetch("/.netlify/functions/ocr", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ image: base64 }),
@@ -461,7 +461,7 @@ async function runOcrFromCanvas() {
 async function testApiKey() {
   setStatus("Testing key...");
   try {
-    const response = await fetch("/api/ocr", { method: "GET" });
+    const response = await fetch("/.netlify/functions/ocr", { method: "GET" });
     if (!response.ok) {
       setStatus("Key test failed.");
       return;
