@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Dark Reader Cam</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main id="app" class="app">
+    <div id="preview" class="preview" aria-live="polite">
+      <video id="video" playsinline muted></video>
+      <canvas id="freezeCanvas" class="freeze" aria-hidden="true"></canvas>
+      <div id="flashOverlay" class="flash-overlay hidden" aria-hidden="true"></div>
+      <div id="startOverlay" class="start-overlay">
+        <button id="startBtn" class="primary-btn">Tap to Start Camera</button>
+        <p class="hint">Works best over HTTPS. On iPhone, open in Safari.</p>
+      </div>
+    </div>
+
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+    <div id="ocrOutput" class="ocr-output hidden" aria-live="polite"></div>
+    <div id="ceoOverlay" class="ceo-overlay hidden" aria-live="polite"></div>
+
+    <section class="tray" aria-label="Controls">
+      <button id="trayToggle" class="tray-toggle" aria-expanded="true" aria-controls="trayContent">Controls</button>
+      <div id="trayContent" class="tray-content">
+      <div class="control-row">
+        <label for="brightness">Brightness <span id="brightnessVal">1.0</span></label>
+        <input id="brightness" type="range" min="0.5" max="2.5" step="0.05" value="1" />
+      </div>
+      <div class="control-row">
+        <label for="contrast">Contrast <span id="contrastVal">1.0</span></label>
+        <input id="contrast" type="range" min="0.5" max="2.5" step="0.05" value="1" />
+      </div>
+      <div class="control-row">
+        <label for="zoom">Zoom <span id="zoomVal">1.0</span></label>
+        <input id="zoom" type="range" min="1" max="3" step="0.1" value="1" />
+      </div>
+      <div class="control-row">
+        <label>OCR (Netlify Function)</label>
+        <div class="input-row">
+          <div class="hint">Uses /api/ocr on your Netlify deploy.</div>
+          <button id="testKeyBtn" class="ghost-btn">Test Key</button>
+        </div>
+      </div>
+
+      <div class="button-row">
+        <button id="freezeBtn" class="secondary-btn">Freeze Frame</button>
+        <button id="torchBtn" class="secondary-btn hidden">Torch</button>
+        <button id="attentionBtn" class="secondary-btn">Attention Mode</button>
+        <button id="ceoBtn" class="secondary-btn">CEO Mode</button>
+        <button id="resetBtn" class="ghost-btn">Reset</button>
+      </div>
+      </div>
+    </section>
+
+    <div id="attentionModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="attentionTitle">
+      <div class="modal-card">
+        <h2 id="attentionTitle">Attention Mode</h2>
+        <p>This mode flashes the screen and (if supported) the torch in a rapid, unpredictable pattern while reading captured text aloud. It may not be safe for people sensitive to flashing lights.</p>
+        <div class="modal-actions">
+          <button id="attentionCancel" class="ghost-btn">Cancel</button>
+          <button id="attentionConfirm" class="primary-btn">Start</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="ceoModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="ceoTitle">
+      <div class="modal-card">
+        <h2 id="ceoTitle">CEO Mode</h2>
+        <p>You speak the “You:” lines. The app waits based on your speaking speed, then speaks the “Employee:” lines.</p>
+        <div class="control-row">
+          <label for="ceoDelay">Your speaking speed (words per minute)</label>
+          <input id="ceoDelay" type="number" min="80" max="220" step="5" value="140" />
+        </div>
+        <div class="control-row">
+          <label for="ceoScript">Script</label>
+          <textarea id="ceoScript" rows="6"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button id="ceoCancel" class="ghost-btn">Cancel</button>
+          <button id="ceoStart" class="primary-btn">Start</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
